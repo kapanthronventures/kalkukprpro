@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator KPR — Hendrik Panthron</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════
+   THEME VARIABLES
+═══════════════════════════════════════════ */
+:root {
+  /* LIGHT (default) */
+  --bg:        #F0EDE6;
+  --bg2:       #FFFFFF;
+  --bg3:       #F7F5F1;
+  --bg4:       #EDE9E2;
+  --text:      #1C1917;
+  --text2:     #6B6560;
+  --text3:     #9E9890;
+  --accent:    #8B5E20;
+  --accent2:   #A97428;
+  --accent-lt: #C9922A;
+  --accent-bg: rgba(139,94,32,0.07);
+  --accent-bg2:rgba(139,94,32,0.13);
+  --border:    rgba(139,94,32,0.18);
+  --border2:   rgba(139,94,32,0.09);
+  --shadow:    0 4px 24px rgba(0,0,0,0.07);
+  --shadow2:   0 1px 4px rgba(0,0,0,0.06);
+  --teal:      #1B7A6E;
+  --coral:     #C0522E;
+  --green:     #2E7D52;
+  --red:       #B84040;
+  --blue:      #2A5F8F;
+  --radius:    13px;
+  --radius-sm: 8px;
+  --hdr-bg:    #FFFFFF;
+  --hdr-border:#E8E2D8;
+  --btn-text:  #FFFFFF;
+}
+[data-theme="dark"] {
+  --bg:        #0B1623;
+  --bg2:       #111E2F;
+  --bg3:       #172744;
+  --bg4:       #0D1B2A;
+  --text:      #EDE8DF;
+  --text2:     #BFB89F;
+  --text3:     #8A8070;
+  --accent:    #C9922A;
+  --accent2:   #E5A93A;
+  --accent-lt: #F4C878;
+  --accent-bg: rgba(201,146,42,0.08);
+  --accent-bg2:rgba(201,146,42,0.15);
+  --border:    rgba(201,146,42,0.20);
+  --border2:   rgba(201,146,42,0.09);
+  --shadow:    0 8px 32px rgba(0,0,0,0.40);
+  --shadow2:   0 2px 8px rgba(0,0,0,0.30);
+  --teal:      #2A9D8F;
+  --coral:     #E76F51;
+  --green:     #52B788;
+  --red:       #E07070;
+  --blue:      #5A9ED4;
+  --hdr-bg:    #0D1B2A;
+  --hdr-border:rgba(201,146,42,0.18);
+  --btn-text:  #0B1623;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  font-size:14px;line-height:1.6;
+  min-height:100vh;
+  transition:background .3s,color .3s;
+}
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+.site-header{
+  background:var(--hdr-bg);
+  border-bottom:1px solid var(--hdr-border);
+  padding:14px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  position:sticky;top:0;z-index:200;
+  box-shadow:var(--shadow2);
+  transition:background .3s,border-color .3s;
+}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.brand-icon{
+  width:40px;height:40px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.brand-text h1{
+  font-family:'Playfair Display',serif;
+  font-size:17px;font-weight:700;color:var(--text);
+  letter-spacing:0.01em;white-space:nowrap;
+}
+.brand-text p{font-size:10px;color:var(--text3);letter-spacing:0.07em;text-transform:uppercase}
+
+.header-center{flex:1;text-align:center}
+#liveClock{
+  font-family:'DM Mono',monospace;
+  font-size:12px;color:var(--text2);
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  padding:5px 14px;
+  display:inline-block;
+  letter-spacing:0.02em;
+}
+
+.header-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.trademark{font-size:11px;color:var(--text3)}
+.trademark span{color:var(--accent);font-weight:600}
+
+/* Theme Toggle */
+.theme-toggle{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:24px;padding:5px 12px;cursor:pointer;
+  font-size:12px;font-weight:500;color:var(--text2);
+  transition:all .2s;white-space:nowrap;
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.toggle-track{
+  width:34px;height:18px;background:var(--border);
+  border-radius:9px;position:relative;transition:background .3s;
+}
+[data-theme="dark"] .toggle-track{background:var(--accent)}
+.toggle-thumb{
+  width:14px;height:14px;background:#fff;
+  border-radius:50%;position:absolute;top:2px;left:2px;
+  transition:transform .3s;
+}
+[data-theme="dark"] .toggle-thumb{transform:translateX(16px)}
+
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.app{max-width:1460px;margin:0 auto;padding:24px 24px 0}
+.top-grid{display:grid;grid-template-columns:390px 1fr;gap:22px;align-items:start}
+
+/* ═══════════════════════════════════════════
+   PANELS
+═══════════════════════════════════════════ */
+.panel{
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow2);
+  transition:background .3s,border-color .3s;
+}
+.panel-header{
+  padding:13px 18px;
+  border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;gap:9px;
+  background:var(--bg3);
+}
+.panel-header .ph-icon{font-size:15px}
+.panel-header h2{
+  font-family:'Playfair Display',serif;
+  font-size:14px;font-weight:600;color:var(--accent);
+}
+.panel-body{padding:18px}
+
+/* ═══════════════════════════════════════════
+   FORM
+═══════════════════════════════════════════ */
+.form-group{margin-bottom:14px}
+.label-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+label{
+  font-size:11px;font-weight:600;
+  color:var(--text2);letter-spacing:0.05em;text-transform:uppercase;
+}
+.tip-btn{
+  width:16px;height:16px;border-radius:50%;
+  background:var(--accent-bg2);border:1px solid var(--border);
+  color:var(--accent);font-size:9px;font-weight:700;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .15s;font-family:'Outfit',sans-serif;
+  line-height:1;padding:0;
+}
+.tip-btn:hover{background:var(--accent);color:var(--btn-text)}
+
+/* Floating tooltip */
+#floatTip{
+  position:fixed;z-index:9999;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,0.15);
+  padding:12px 15px;max-width:280px;
+  font-size:12px;line-height:1.65;color:var(--text);
+  display:none;pointer-events:none;
+}
+#floatTip strong{display:block;color:var(--accent);margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:0.04em}
+#floatTip.visible{display:block}
+
+.input-wrap{position:relative;display:flex;align-items:center}
+.prefix,.suffix{
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  color:var(--accent);padding:0 11px;height:38px;
+  display:flex;align-items:center;
+  font-size:12px;font-weight:600;
+  font-family:'DM Mono',monospace;
+  white-space:nowrap;flex-shrink:0;
+  transition:background .3s,border-color .3s;
+}
+.prefix{border-right:none;border-radius:var(--radius-sm) 0 0 var(--radius-sm)}
+.suffix{border-left:none;border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+
+input[type="number"],input[type="text"]{
+  width:100%;height:38px;
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-sm);
+  color:var(--text);padding:0 12px;
+  font-family:'DM Mono',monospace;font-size:12px;
+  outline:none;transition:all .2s;
+}
+input[type="number"]:focus,input[type="text"]:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-bg2);
+}
+.input-wrap input{border-radius:0}
+.input-wrap .prefix+input{border-left:none}
+.input-wrap input+.suffix{border-left:none}
+input[readonly]{
+  background:var(--bg3);color:var(--text2);cursor:not-allowed;
+}
+.input-computed{
+  background:var(--accent-bg)!important;
+  color:var(--accent)!important;
+  font-weight:600;
+}
+
+/* LTV Bar */
+.ltv-wrap{margin-top:6px}
+.ltv-bar-bg{
+  height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-top:5px;
+}
+.ltv-bar-fill{height:100%;border-radius:3px;transition:width .4s ease;
+  background:linear-gradient(90deg,var(--green),var(--accent2),var(--red))}
+.ltv-info{display:flex;justify-content:space-between;align-items:center;margin-top:3px}
+.ltv-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--accent)}
+.ltv-badge{font-size:10px;font-weight:600;letter-spacing:0.04em;
+  padding:2px 7px;border-radius:4px;}
+.ltv-ok{background:rgba(46,125,82,0.12);color:var(--green)}
+.ltv-warn{background:rgba(201,146,42,0.12);color:var(--accent2)}
+.ltv-high{background:rgba(184,64,64,0.12);color:var(--red)}
+
+/* DP Toggle */
+.dp-toggle{display:flex;gap:0;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border2);margin-bottom:8px}
+.dp-toggle button{
+  flex:1;padding:7px 10px;
+  background:transparent;border:none;cursor:pointer;
+  font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;
+  color:var(--text2);transition:all .2s;letter-spacing:0.03em;
+}
+.dp-toggle button.active{background:var(--accent);color:#fff}
+
+/* ═══════════════════════════════════════════
+   SCHEME TABS
+═══════════════════════════════════════════ */
+.scheme-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.scheme-tab{
+  background:var(--bg3);border:1.5px solid var(--border2);
+  border-radius:var(--radius-sm);padding:9px 10px;cursor:pointer;
+  transition:all .2s;text-align:center;
+}
+.scheme-tab:hover{border-color:var(--accent2)}
+.scheme-tab.active{border-color:var(--accent);background:var(--accent-bg)}
+.scheme-tab .stag{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:0.07em;text-transform:uppercase}
+.scheme-tab .sname{font-size:10px;color:var(--text2);margin-top:2px;line-height:1.3}
+
+.scheme-inputs{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:10px;padding:15px;
+  animation:fadeIn .2s ease;
+  transition:background .3s,border-color .3s;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+hr.divider{border:none;border-top:1px solid var(--border2);margin:13px 0}
+.tier-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
+.tier-label{font-size:10px;color:var(--accent);font-weight:700;margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid var(--border2);letter-spacing:0.05em;text-transform:uppercase}
+.tier-block{border-left:2px solid var(--border2);padding-left:11px;margin-bottom:11px;transition:border-color .3s}
+.tier-block:nth-child(1){border-color:var(--teal)}
+.tier-block:nth-child(2){border-color:var(--accent2)}
+.tier-block:nth-child(3){border-color:var(--blue)}
+.tier-block:nth-child(4){border-color:var(--coral)}
+.tier-block:nth-child(5){border-color:var(--green)}
+
+/* Calc button */
+.btn-calc{
+  width:100%;padding:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;border-radius:var(--radius-sm);cursor:pointer;
+  font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;
+  color:#fff;letter-spacing:0.02em;
+  transition:all .2s;margin-top:4px;
+  box-shadow:0 3px 12px rgba(139,94,32,0.25);
+}
+.btn-calc:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(139,94,32,0.35)}
+.btn-calc:active{transform:translateY(0)}
+
+/* ═══════════════════════════════════════════
+   RESULTS — SUMMARY CARDS
+═══════════════════════════════════════════ */
+.results-panel{display:flex;flex-direction:column;gap:18px}
+.summary-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.scard{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--radius);padding:16px;
+  position:relative;overflow:hidden;
+  box-shadow:var(--shadow2);
+  transition:background .3s,border-color .3s;
+}
+.scard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--grad,linear-gradient(90deg,var(--accent),var(--accent2)));
+}
+.scard.green::before{--grad:linear-gradient(90deg,var(--teal),var(--green))}
+.scard.red::before{--grad:linear-gradient(90deg,var(--coral),var(--red))}
+.scard-label{font-size:10px;color:var(--text2);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:5px;font-weight:600}
+.scard-value{font-family:'DM Mono',monospace;font-size:15px;font-weight:600;color:var(--text);line-height:1.3}
+.scard-sub{font-size:10px;color:var(--text3);margin-top:4px}
+
+/* Float card */
+#floatCard{margin-top:-6px}
+#floatCard .scard{background:var(--accent-bg);border-color:var(--border)}
+
+/* ═══════════════════════════════════════════
+   EXPORT BUTTON
+═══════════════════════════════════════════ */
+.btn-export{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:7px;padding:6px 12px;cursor:pointer;
+  font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;
+  color:var(--text2);transition:all .2s;white-space:nowrap;
+}
+.btn-export:hover{border-color:var(--accent);color:var(--accent)}
+.btn-export svg{width:13px;height:13px}
+
+/* ═══════════════════════════════════════════
+   CHART
+═══════════════════════════════════════════ */
+.chart-section{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--radius);padding:20px;
+  box-shadow:var(--shadow2);
+  transition:background .3s;
+}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-head h3{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--accent)}
+#chartWrap{position:relative;height:270px}
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:10px;color:var(--text3)}
+.placeholder .big-icon{font-size:36px;opacity:0.35}
+.placeholder p{font-size:12px}
+
+/* ═══════════════════════════════════════════
+   TABLE
+═══════════════════════════════════════════ */
+.table-section{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow2);
+  transition:background .3s;
+}
+.table-controls{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:12px 18px;border-bottom:1px solid var(--border2);
+  background:var(--bg3);
+}
+.tc-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--accent);flex:1}
+.search-input{
+  height:32px;width:160px;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:6px;padding:0 10px;
+  color:var(--text);font-family:'Outfit',sans-serif;font-size:12px;outline:none;
+  transition:border-color .2s;
+}
+.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:var(--text3)}
+
+/* Disclaimer */
+.tbl-disclaimer{
+  background:rgba(184,64,64,0.06);
+  border-bottom:1px solid rgba(184,64,64,0.12);
+  padding:9px 18px;
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:11px;color:var(--red);line-height:1.5;
+}
+.tbl-disclaimer .disc-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+[data-theme="dark"] .tbl-disclaimer{background:rgba(224,112,112,0.07)}
+
+.table-wrap{overflow-x:auto;max-height:400px;overflow-y:auto}
+.table-wrap::-webkit-scrollbar{width:5px;height:5px}
+.table-wrap::-webkit-scrollbar-track{background:var(--bg3)}
+.table-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+table{width:100%;border-collapse:collapse;min-width:820px}
+thead th{
+  background:var(--bg3);
+  padding:9px 13px;
+  font-size:10px;font-weight:700;
+  color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;
+  text-align:right;white-space:nowrap;
+  position:sticky;top:0;z-index:2;
+  border-bottom:1px solid var(--border2);
+  transition:background .3s;
+}
+thead th:first-child{text-align:center}
+tbody tr{border-bottom:1px solid var(--border2);transition:background .12s}
+tbody tr:hover{background:var(--accent-bg)}
+tbody td{
+  padding:8px 13px;font-family:'DM Mono',monospace;
+  font-size:11px;text-align:right;color:var(--text);white-space:nowrap;
+}
+tbody td:first-child{text-align:center;color:var(--text2);font-weight:600}
+.type-fixed{color:var(--teal)!important}
+.type-float{color:var(--accent)!important}
+.type-fp2{color:var(--accent2)!important}
+.type-fp3{color:var(--blue)!important}
+.type-fp4{color:var(--coral)!important}
+tbody tr.hl-row td{background:rgba(139,94,32,0.05)}
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-top:1px solid var(--border2);flex-wrap:wrap}
+.pagination button{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:5px;padding:4px 10px;cursor:pointer;
+  font-family:'Outfit',sans-serif;font-size:11px;color:var(--text2);
+  transition:all .15s;
+}
+.pagination button:hover,.pagination button.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.pagination button:disabled{opacity:0.35;cursor:not-allowed}
+.page-info{font-size:11px;color:var(--text3)}
+
+/* ═══════════════════════════════════════════
+   SENSITIVITY TABLE
+═══════════════════════════════════════════ */
+.sens-tbl{width:100%;border-collapse:collapse}
+.sens-tbl th{background:var(--bg3);padding:7px 13px;font-size:10px;color:var(--accent);text-align:right;font-weight:700;letter-spacing:0.05em;text-transform:uppercase}
+.sens-tbl th:first-child{text-align:left}
+.sens-tbl td{padding:7px 13px;font-family:'DM Mono',monospace;font-size:11px;text-align:right;color:var(--text);border-bottom:1px solid var(--border2)}
+.sens-tbl td:first-child{text-align:left;color:var(--text2)}
+.sens-tbl tr.cur{background:var(--accent-bg)}
+.sens-tbl .up{color:var(--red)}
+.sens-tbl .dn{color:var(--green)}
+.sens-tbl .neu{color:var(--text3)}
+
+/* ═══════════════════════════════════════════
+   GLOSSARY
+═══════════════════════════════════════════ */
+.glossary-section{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow2);margin-top:20px;
+  transition:background .3s;
+}
+.glossary-grid{display:grid;grid-template-columns:1fr 1fr}
+.gterm{border-bottom:1px solid var(--border2);overflow:hidden}
+.gterm:nth-child(odd){border-right:1px solid var(--border2)}
+.gterm-head{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 16px;cursor:pointer;
+  transition:background .15s;
+}
+.gterm-head:hover{background:var(--accent-bg)}
+.gterm-badge{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--accent-bg2);border:1px solid var(--border);
+  color:var(--accent);font-size:10px;font-weight:700;
+  display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;cursor:pointer;transition:all .15s;
+}
+.gterm-head:hover .gterm-badge{background:var(--accent);color:#fff}
+.gterm.open .gterm-badge{background:var(--accent);color:#fff}
+.gterm-head h4{font-size:12px;font-weight:600;color:var(--text);flex:1;line-height:1.3}
+.gterm-head .arrow{font-size:16px;color:var(--accent);transition:transform .2s;line-height:1}
+.gterm.open .arrow{transform:rotate(45deg)}
+.gterm-body{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 16px;font-size:11px;color:var(--text2);line-height:1.7}
+.gterm.open .gterm-body{max-height:220px;padding:0 16px 13px}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+.site-footer{
+  margin-top:32px;
+  border-top:1px solid var(--border2);
+  padding:16px 24px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  background:var(--bg2);
+  transition:background .3s;
+}
+.footer-brand{display:flex;align-items:center;gap:8px}
+.footer-brand .fi{font-size:14px}
+.footer-brand span{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:var(--accent)}
+.footer-copy{font-size:11px;color:var(--text3);text-align:center}
+.footer-copy strong{color:var(--text2)}
+.footer-right{font-size:10px;color:var(--text3);text-align:right}
+
+/* ═══════════════════════════════════════════
+   INFO BAR
+═══════════════════════════════════════════ */
+.info-bar{
+  background:var(--accent-bg);border:1px solid var(--border2);
+  border-radius:7px;padding:8px 12px;
+  font-size:11px;color:var(--text2);
+  display:flex;align-items:flex-start;gap:7px;margin-bottom:12px;line-height:1.5;
+}
+.info-bar .ii{color:var(--accent);flex-shrink:0;font-size:13px}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg3)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+@media(max-width:960px){
+  .top-grid{grid-template-columns:1fr}
+  .summary-cards{grid-template-columns:1fr 1fr}
+  .glossary-grid{grid-template-columns:1fr}
+  .gterm:nth-child(odd){border-right:none}
+}
+@media(max-width:600px){
+  .app,.site-footer{padding-left:14px;padding-right:14px}
+  .summary-cards{grid-template-columns:1fr}
+  .site-header{flex-wrap:wrap;padding:12px 14px}
+  .header-center{order:3;width:100%}
+  #liveClock{font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ FLOATING TOOLTIP ═══════════════ -->
+<div id="floatTip"><strong id="ftTitle"></strong><span id="ftBody"></span></div>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-icon">🏠</div>
+    <div class="brand-text">
+      <h1>Kalkulator KPR Pro</h1>
+      <p>Simulasi Kredit Pemilikan Rumah</p>
+    </div>
+  </div>
+  <div class="header-center">
+    <div id="liveClock">Memuat waktu...</div>
+  </div>
+  <div class="header-right">
+    <div class="trademark">by <span>Hendrik Panthron</span></div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Ganti tema">
+      <span id="themeLabel">🌙 Gelap</span>
+      <div class="toggle-track"><div class="toggle-thumb"></div></div>
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div class="app">
+  <div class="top-grid">
+
+    <!-- ══════════ LEFT: INPUT ══════════ -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="ph-icon">📋</span>
+        <h2>Parameter Kredit</h2>
+      </div>
+      <div class="panel-body">
+
+        <!-- Harga Properti -->
+        <div class="form-group">
+          <div class="label-row">
+            <label>Harga Properti</label>
+            <button class="tip-btn" onclick="showTip(event,'Harga Properti','Nilai jual properti yang disepakati antara penjual dan pembeli. Menjadi dasar perhitungan DP dan LTV.')">!</button>
+          </div>
+          <div class="input-wrap">
+            <div class="prefix">Rp</div>
+            <input type="number" id="hargaProperti" value="1000000000" min="0" step="1000000" oninput="updateDP()">
+          </div>
+        </div>
+
+        <!-- DP -->
+        <div class="form-group">
+          <div class="label-row">
+            <label>Uang Muka / DP</label>
+            <button class="tip-btn" onclick="showTip(event,'Uang Muka / Down Payment (DP)','Pembayaran awal dari pembeli kepada penjual. Umumnya minimal 10–30% dari harga properti. Makin besar DP, makin kecil plafond kredit dan cicilan bulanan.')">!</button>
+          </div>
+          <div class="dp-toggle">
+            <button class="active" id="btnDpPct" onclick="setDpMode(\'pct\')">% Persentase</button>
+            <button id="btnDpNom" onclick="setDpMode(\'nom\')">Rp Nominal</button>
+          </div>
+          <div id="dpPctWrap" class="input-wrap">
+            <input type="number" id="dpPct" value="20" min="0" max="100" step="0.5" oninput="updateDP()">
+            <div class="suffix">%</div>
+          </div>
+          <div id="dpNomWrap" class="input-wrap" style="display:none">
+            <div class="prefix">Rp</div>
+            <input type="number" id="dpNom" value="200000000" min="0" step="1000000" oninput="updateDP()">
+          </div>
+        </div>
+
+        <!-- Nominal DP -->
+        <div class="form-group">
+          <div class="label-row"><label>Nominal DP</label></div>
+          <div class="input-wrap">
+            <div class="prefix">Rp</div>
+            <input type="text" id="nominalDP" readonly class="input-computed">
+          </div>
+        </div>
+
+        <!-- Plafond -->
+        <div class="form-group">
+          <div class="label-row">
+            <label>Plafond Kredit</label>
+            <button class="tip-btn" onclick="showTip(event,'Plafond Kredit','Jumlah total pinjaman yang disetujui bank = Harga Properti − Uang Muka. Ini adalah nilai pokok (principal) yang akan diamortisasi sepanjang tenor.')">!</button>
+          </div>
+          <div class="input-wrap">
+            <div class="prefix">Rp</div>
+            <input type="text" id="plafondKredit" readonly class="input-computed">
+          </div>
+        </div>
+
+        <!-- LTV -->
+        <div class="form-group">
+          <div class="label-row">
+            <label>LTV — Loan-to-Value</label>
+            <button class="tip-btn" onclick="showTip(event,'LTV (Loan-to-Value)','Rasio antara jumlah pinjaman dibandingkan nilai properti. LTV = Plafond / Harga Properti × 100%. Bank Indonesia mengatur batas LTV: umumnya maksimal 80–90% untuk rumah tapak, lebih ketat untuk properti kedua dan seterusnya.')">!</button>
+          </div>
+          <div class="ltv-wrap">
+            <div class="ltv-info">
+              <span class="ltv-val" id="ltvVal">—</span>
+              <span class="ltv-badge" id="ltvBadge">—</span>
+            </div>
+            <div class="ltv-bar-bg"><div class="ltv-bar-fill" id="ltvBar" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <!-- Tenor -->
+        <div class="form-group">
+          <div class="label-row">
+            <label>Tenor Kredit</label>
+            <button class="tip-btn" onclick="showTip(event,'Tenor Kredit','Jangka waktu cicilan kredit dalam tahun. Semakin panjang tenor → cicilan/bulan lebih kecil, namun total bunga lebih besar. Umumnya 5–30 tahun.')">!</button>
+          </div>
+          <div class="input-wrap">
+            <input type="number" id="tenorTahun" value="20" min="1" max="30" step="1">
+            <div class="suffix">Tahun</div>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Scheme -->
+        <div class="form-group">
+          <div class="label-row">
+            <label>Skema Suku Bunga</label>
+            <button class="tip-btn" onclick="showTip(event,'Skema Suku Bunga','Pilih model penetapan bunga KPR yang akan disimulasikan. Setiap bank menawarkan skema berbeda. Pilih sesuai penawaran bank Anda.')">!</button>
+          </div>
+          <div class="scheme-tabs">
+            <div class="scheme-tab active" onclick="setScheme(\'A\')">
+              <div class="stag">Skema A</div>
+              <div class="sname">Fixed + Floating</div>
+            </div>
+            <div class="scheme-tab" onclick="setScheme(\'B\')">
+              <div class="stag">Skema B</div>
+              <div class="sname">Fixed Berjenjang</div>
+            </div>
+            <div class="scheme-tab" onclick="setScheme(\'C\')">
+              <div class="stag">Skema C</div>
+              <div class="sname">Fixed Sepanjang Tenor</div>
+            </div>
+            <div class="scheme-tab" onclick="setScheme(\'D\')">
+              <div class="stag">Skema D</div>
+              <div class="sname">Floating Ref + Margin</div>
+            </div>
+          </div>
+
+          <!-- Scheme A -->
+          <div class="scheme-inputs" id="schemeA">
+            <div class="form-group">
+              <div class="label-row">
+                <label>Suku Bunga Fixed (p.a.)</label>
+                <button class="tip-btn" onclick="showTip(event,'Suku Bunga Fixed','Bunga tetap yang berlaku selama masa fixed. Biasanya lebih rendah dari bunga floating di awal, sebagai daya tarik nasabah.')">!</button>
+              </div>
+              <div class="input-wrap">
+                <input type="number" id="aFixedRate" value="5.25" min="0" max="30" step="0.01">
+                <div class="suffix">% p.a.</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="label-row"><label>Masa Fixed</label></div>
+              <div class="input-wrap">
+                <input type="number" id="aFixedYears" value="3" min="1" max="30" step="1">
+                <div class="suffix">Tahun</div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <div class="label-row">
+                <label>Suku Bunga Floating (p.a.)</label>
+                <button class="tip-btn" onclick="showTip(event,'Suku Bunga Floating','Bunga mengambang setelah masa fixed berakhir. Dapat naik/turun mengikuti kebijakan bank atau suku bunga acuan.')">!</button>
+              </div>
+              <div class="input-wrap">
+                <input type="number" id="aFloatRate" value="11" min="0" max="30" step="0.01">
+                <div class="suffix">% p.a.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scheme B -->
+          <div class="scheme-inputs" id="schemeB" style="display:none">
+            <div class="info-bar"><span class="ii">ℹ</span>Hingga 5 jenjang bunga tetap naik bertahap, lalu floating. Kosongkan durasi jika jenjang tidak digunakan.</div>
+            <div class="tier-block">
+              <div class="tier-label">Jenjang 1</div>
+              <div class="tier-row">
+                <div class="form-group" style="margin:0"><label>Rate (% p.a.)</label><div class="input-wrap"><input type="number" id="bRate1" value="2.99" min="0" step="0.01"><div class="suffix">%</div></div></div>
+                <div class="form-group" style="margin:0"><label>Durasi (Thn)</label><input type="number" id="bYears1" value="1" min="0" step="1"></div>
+              </div>
+            </div>
+            <div class="tier-block">
+              <div class="tier-label">Jenjang 2</div>
+              <div class="tier-row">
+                <div class="form-group" style="margin:0"><label>Rate (% p.a.)</label><div class="input-wrap"><input type="number" id="bRate2" value="6.49" min="0" step="0.01"><div class="suffix">%</div></div></div>
+                <div class="form-group" style="margin:0"><label>Durasi (Thn)</label><input type="number" id="bYears2" value="2" min="0" step="1"></div>
+              </div>
+            </div>
+            <div class="tier-block">
+              <div class="tier-label">Jenjang 3</div>
+              <div class="tier-row">
+                <div class="form-group" style="margin:0"><label>Rate (% p.a.)</label><div class="input-wrap"><input type="number" id="bRate3" value="8.99" min="0" step="0.01"><div class="suffix">%</div></div></div>
+                <div class="form-group" style="margin:0"><label>Durasi (Thn)</label><input type="number" id="bYears3" value="2" min="0" step="1"></div>
+              </div>
+            </div>
+            <div class="tier-block">
+              <div class="tier-label">Jenjang 4</div>
+              <div class="tier-row">
+                <div class="form-group" style="margin:0"><label>Rate (% p.a.)</label><div class="input-wrap"><input type="number" id="bRate4" value="9.49" min="0" step="0.01"><div class="suffix">%</div></div></div>
+                <div class="form-group" style="margin:0"><label>Durasi (Thn)</label><input type="number" id="bYears4" value="2" min="0" step="1"></div>
+              </div>
+            </div>
+            <div class="tier-block">
+              <div class="tier-label">Jenjang 5 (Opsional)</div>
+              <div class="tier-row">
+                <div class="form-group" style="margin:0"><label>Rate (% p.a.)</label><div class="input-wrap"><input type="number" id="bRate5" value="0" min="0" step="0.01"><div class="suffix">%</div></div></div>
+                <div class="form-group" style="margin:0"><label>Durasi (Thn)</label><input type="number" id="bYears5" value="0" min="0" step="1"></div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <div class="label-row"><label>Suku Bunga Floating (p.a.)</label></div>
+              <div class="input-wrap"><input type="number" id="bFloatRate" value="12" min="0" step="0.01"><div class="suffix">%</div></div>
+            </div>
+          </div>
+
+          <!-- Scheme C -->
+          <div class="scheme-inputs" id="schemeC" style="display:none">
+            <div class="form-group" style="margin-bottom:0">
+              <div class="label-row">
+                <label>Suku Bunga Fixed (p.a.)</label>
+                <button class="tip-btn" onclick="showTip(event,'Fixed Sepanjang Tenor','Bunga tetap dari awal hingga lunas. Cicilan bulanan sama setiap bulan. Memberikan kepastian penuh, namun umumnya lebih tinggi dari fixed rate promosi.')">!</button>
+              </div>
+              <div class="input-wrap"><input type="number" id="cFixedRate" value="9.5" min="0" step="0.01"><div class="suffix">%</div></div>
+            </div>
+          </div>
+
+          <!-- Scheme D -->
+          <div class="scheme-inputs" id="schemeD" style="display:none">
+            <div class="form-group">
+              <div class="label-row">
+                <label>Suku Bunga Referensi (p.a.)</label>
+                <button class="tip-btn" onclick="showTip(event,'Suku Bunga Referensi','Acuan eksternal yang digunakan bank untuk menentukan bunga floating. Contoh: BI Rate / 7-Day Reverse Repo, SRBI (Sekuritas Rupiah Bank Indonesia), SBN, LPS Rate, JIBOR, SBDK, dll. Ubah nilai ini untuk melihat sensitivitas cicilan.')">!</button>
+              </div>
+              <div class="input-wrap"><input type="number" id="dRefRate" value="5.19" min="0" step="0.01"><div class="suffix">%</div></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <div class="label-row">
+                <label>Margin Tetap Bank (p.a.)</label>
+                <button class="tip-btn" onclick="showTip(event,'Margin Tetap Bank','Selisih tetap yang ditambahkan bank di atas suku bunga referensi. Besaran margin merupakan keuntungan bank dan tidak berubah selama tenor. Rate Efektif = Referensi + Margin.')">!</button>
+              </div>
+              <div class="input-wrap"><input type="number" id="dMargin" value="4.5" min="0" step="0.01"><div class="suffix">%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-calc" onclick="calculate()">🔢 &nbsp; Hitung Simulasi KPR</button>
+
+      </div>
+    </div>
+
+    <!-- ══════════ RIGHT: RESULTS ══════════ -->
+    <div class="results-panel">
+
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="scard">
+          <div class="scard-label">💰 Cicilan Awal / Bulan</div>
+          <div class="scard-value" id="sc1">—</div>
+          <div class="scard-sub" id="sc1sub">Masukkan data lalu klik Hitung</div>
+        </div>
+        <div class="scard green">
+          <div class="scard-label">📊 Total Pembayaran</div>
+          <div class="scard-value" id="sc2">—</div>
+          <div class="scard-sub" id="sc2sub">Pokok + seluruh bunga</div>
+        </div>
+        <div class="scard red">
+          <div class="scard-label">📈 Total Bunga Dibayar</div>
+          <div class="scard-value" id="sc3">—</div>
+          <div class="scard-sub" id="sc3sub">Rasio bunga / plafond: —</div>
+        </div>
+      </div>
+
+      <!-- Float card -->
+      <div id="floatCard" style="display:none">
+        <div class="scard">
+          <div class="scard-label">🔄 Cicilan Masa Floating / Bulan</div>
+          <div class="scard-value" id="sc4">—</div>
+          <div class="scard-sub" id="sc4sub"></div>
+        </div>
+      </div>
+
+      <!-- Sensitivity (Scheme D) -->
+      <div id="sensSection" style="display:none" class="panel">
+        <div class="panel-header"><span class="ph-icon">📉</span><h2>Tabel Sensitivitas — Suku Bunga Referensi</h2></div>
+        <div class="panel-body" style="padding:14px 18px">
+          <table class="sens-tbl" id="sensTable">
+            <thead><tr>
+              <th style="text-align:left">Rate Referensi</th>
+              <th>Rate Efektif</th>
+              <th>Cicilan / Bulan</th>
+              <th>Selisih vs Saat Ini</th>
+            </tr></thead>
+            <tbody id="sensTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-section">
+        <div class="section-head">
+          <h3>📊 Grafik Amortisasi Tahunan</h3>
+          <button class="btn-export" onclick="exportChartJPG()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Simpan JPG
+          </button>
+        </div>
+        <div id="chartWrap">
+          <div class="placeholder">
+            <div class="big-icon">📊</div>
+            <p>Klik "Hitung Simulasi KPR" untuk menampilkan grafik</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-section">
+        <div class="table-controls">
+          <div class="tc-title">📋 Tabel Amortisasi Bulanan</div>
+          <input type="text" class="search-input" id="tableSearch" placeholder="Cari bulan / tipe..." oninput="filterTable()">
+          <button class="btn-export" onclick="exportTablePDF()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Export PDF
+          </button>
+        </div>
+        <div class="tbl-disclaimer">
+          <span class="disc-icon">⚠️</span>
+          <span><strong>Disclaimer:</strong> Tabel ini bersifat <strong>simulasi matematika</strong> dan bukan merupakan cicilan resmi bank. Angka cicilan aktual dapat berbeda karena perhitungan ini <strong>tidak termasuk</strong> biaya-biaya KPR seperti biaya administrasi, provisi, premi asuransi jiwa &amp; asuransi kebakaran, biaya notaris &amp; PPAT, biaya appraisal, PPN, BPHTB, dan biaya lainnya yang ditetapkan oleh masing-masing bank. Konsultasikan dengan bank terkait untuk informasi lengkap.</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="text-align:center">Bulan</th>
+                <th>Saldo Awal (Rp)</th>
+                <th>Rate (% p.a.)</th>
+                <th>Total Cicilan (Rp)</th>
+                <th>Porsi Bunga (Rp)</th>
+                <th>Porsi Pokok (Rp)</th>
+                <th>Saldo Akhir (Rp)</th>
+                <th>Tipe</th>
+              </tr>
+            </thead>
+            <tbody id="amortTbody">
+              <tr><td colspan="8" style="text-align:center;padding:36px;color:var(--text3)">Belum ada data — klik "Hitung Simulasi KPR"</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+
+    </div><!-- end results-panel -->
+  </div><!-- end top-grid -->
+
+  <!-- ═══════════════ GLOSSARY ═══════════════ -->
+  <div class="glossary-section">
+    <div class="panel-header">
+      <span class="ph-icon">📚</span>
+      <h2>Kamus Istilah KPR — klik (!) untuk membuka definisi</h2>
+    </div>
+    <div class="glossary-grid" id="glossaryGrid"></div>
+  </div>
+
+</div><!-- end app -->
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="site-footer">
+  <div class="footer-brand">
+    <span class="fi">🏠</span>
+    <span>Kalkulator KPR oleh Hendrik Panthron</span>
+  </div>
+  <div class="footer-copy">
+    Simulasi ini bersifat edukatif. Angka bukan merupakan penawaran atau komitmen kredit dari lembaga keuangan manapun.<br>
+    <strong>All Rights Reserved © 2026 — Hendrik Panthron</strong>
+  </div>
+  <div class="footer-right">
+    v2.0 · 2026<br>
+    <span style="opacity:.6">Skema A · B · C · D</span>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+   JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+// ═══════ LIVE CLOCK (WIB = GMT+7) ═══════
+const MONTHS_ID=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const DAYS_ID=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+function updateClock(){
+  const now=new Date();
+  const wib=new Date(now.getTime()+(7*3600000));
+  const d=DAYS_ID[wib.getUTCDay()];
+  const dt=wib.getUTCDate();
+  const mo=MONTHS_ID[wib.getUTCMonth()];
+  const yr=wib.getUTCFullYear();
+  const h=String(wib.getUTCHours()).padStart(2,'0');
+  const m=String(wib.getUTCMinutes()).padStart(2,'0');
+  const s=String(wib.getUTCSeconds()).padStart(2,'0');
+  document.getElementById('liveClock').textContent=`${d}, ${dt} ${mo} ${yr}  ·  ${h}:${m}:${s} WIB`;
+}
+setInterval(updateClock,1000);
+updateClock();
+
+// ═══════ THEME TOGGLE ═══════
+function toggleTheme(){
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('themeLabel').textContent=isDark?'🌙 Gelap':'☀️ Terang';
+  // Update chart if exists
+  if(amortChart && allSchedule.length>0) renderChart();
+}
+
+// ═══════ FLOATING TOOLTIP ═══════
+let tipTimeout=null;
+function showTip(e,title,body){
+  e.stopPropagation();
+  const tip=document.getElementById('floatTip');
+  const ft=document.getElementById('ftTitle');
+  const fb=document.getElementById('ftBody');
+  if(tip.classList.contains('visible')&&ft.textContent===title){
+    tip.classList.remove('visible');return;
+  }
+  ft.textContent=title;
+  fb.textContent=body;
+  tip.classList.add('visible');
+  // Position
+  const btn=e.currentTarget;
+  const rect=btn.getBoundingClientRect();
+  const tw=280;
+  let left=rect.right+8;
+  let top=rect.top;
+  if(left+tw>window.innerWidth-16) left=rect.left-tw-8;
+  if(top+120>window.innerHeight) top=window.innerHeight-140;
+  tip.style.left=Math.max(8,left)+'px';
+  tip.style.top=Math.max(8,top)+'px';
+  clearTimeout(tipTimeout);
+}
+document.addEventListener('click',e=>{
+  if(!e.target.classList.contains('tip-btn')&&!e.target.closest('.gterm-head'))
+    document.getElementById('floatTip').classList.remove('visible');
+});
+
+// ═══════ DP MODE ═══════
+let dpMode='pct';
+function setDpMode(m){
+  dpMode=m;
+  document.getElementById('btnDpPct').classList.toggle('active',m==='pct');
+  document.getElementById('btnDpNom').classList.toggle('active',m==='nom');
+  document.getElementById('dpPctWrap').style.display=m==='pct'?'flex':'none';
+  document.getElementById('dpNomWrap').style.display=m==='nom'?'flex':'none';
+  updateDP();
+}
+function updateDP(){
+  const hp=parseFloat(document.getElementById('hargaProperti').value)||0;
+  let dp=0;
+  if(dpMode==='pct'){
+    dp=hp*(parseFloat(document.getElementById('dpPct').value)||0)/100;
+  }else{
+    dp=parseFloat(document.getElementById('dpNom').value)||0;
+  }
+  dp=Math.min(dp,hp);
+  const plafond=Math.max(0,hp-dp);
+  document.getElementById('nominalDP').value='Rp '+fmtNum(Math.round(dp));
+  document.getElementById('plafondKredit').value='Rp '+fmtNum(Math.round(plafond));
+  // LTV
+  const ltv=hp>0?(plafond/hp)*100:0;
+  document.getElementById('ltvVal').textContent=ltv.toFixed(1)+'%';
+  const bar=document.getElementById('ltvBar');
+  const badge=document.getElementById('ltvBadge');
+  bar.style.width=Math.min(100,ltv)+'%';
+  if(ltv<=80){badge.textContent='Normal';badge.className='ltv-badge ltv-ok';}
+  else if(ltv<=90){badge.textContent='Perhatian';badge.className='ltv-badge ltv-warn';}
+  else{badge.textContent='Tinggi';badge.className='ltv-badge ltv-high';}
+}
+updateDP();
+
+// ═══════ SCHEME ═══════
+let currentScheme='A';
+function setScheme(s){
+  currentScheme=s;
+  document.querySelectorAll('.scheme-tab').forEach((t,i)=>{
+    t.classList.toggle('active',['A','B','C','D'][i]===s);
+  });
+  ['A','B','C','D'].forEach(x=>{
+    document.getElementById('scheme'+x).style.display=x===s?'block':'none';
+  });
+  document.getElementById('sensSection').style.display='none';
+  document.getElementById('floatCard').style.display='none';
+}
+
+// ═══════ MATH ═══════
+function fmtNum(n){return new Intl.NumberFormat('id-ID').format(n)}
+function fmtRp(n){
+  if(isNaN(n)||n==null) return '—';
+  const a=Math.abs(n);
+  if(a>=1e12) return (n/1e12).toFixed(3)+' T';
+  if(a>=1e9)  return (n/1e9).toFixed(3)+' M';
+  return fmtNum(Math.round(n));
+}
+function pmtCalc(principal,annualRate,months){
+  if(months<=0)return 0;
+  if(annualRate===0)return principal/months;
+  const r=annualRate/12;
+  return principal*r/(1-Math.pow(1+r,-months));
+}
+
+function buildSchedule(principal,totalMonths,payments){
+  const sched=[];
+  let bal=principal;
+  for(let m=0;m<totalMonths;m++){
+    if(bal<=0.01)break;
+    const{payment,rate,label,isTransition}=payments[m];
+    const interest=bal*rate/12;
+    const princ=Math.max(0,payment-interest);
+    const endBal=Math.max(0,bal-princ);
+    sched.push({month:m+1,startBalance:bal,rate,payment,interest,principal:princ,endBalance:endBal,label,isTransition:isTransition||false});
+    bal=endBal;
+  }
+  return sched;
+}
+
+function calcA(principal,tenor,fixedRate,floatRate,fixedYears){
+  const tm=tenor*12, fm=Math.min(fixedYears*12,tm);
+  const pmtF=pmtCalc(principal,fixedRate/100,tm);
+  let bal=principal;
+  const pays=[];
+  for(let m=0;m<fm;m++){
+    const i=bal*(fixedRate/100)/12;
+    pays.push({payment:pmtF,rate:fixedRate/100,label:'Fixed',isTransition:m===fm-1});
+    bal=Math.max(0,bal-(pmtF-i));
+  }
+  const rem=tm-fm;
+  const pmtFl=rem>0?pmtCalc(bal,floatRate/100,rem):0;
+  for(let m=fm;m<tm;m++) pays.push({payment:pmtFl,rate:floatRate/100,label:'Floating'});
+  return{schedule:buildSchedule(principal,tm,pays),pmtFixed:pmtF,pmtFloat:pmtFl,fixedMonths:fm};
+}
+
+function calcB(principal,tenor,tiers,floatRate){
+  const tm=tenor*12;
+  const pays=[];
+  let bal=principal,done=0;
+  for(let ti=0;ti<tiers.length;ti++){
+    const{rate,years}=tiers[ti];
+    if(years<=0||rate<=0)continue;
+    const tierM=Math.min(years*12,tm-done);
+    if(tierM<=0)break;
+    const remM=tm-done;
+    const tierPmt=pmtCalc(bal,rate/100,remM);
+    for(let m=0;m<tierM;m++){
+      const i=bal*(rate/100)/12;
+      pays.push({payment:tierPmt,rate:rate/100,label:`Fixed P${ti+1}`,isTransition:m===tierM-1});
+      bal=Math.max(0,bal-(tierPmt-i));
+    }
+    done+=tierM;
+  }
+  const remM2=tm-done;
+  const pmtFl=remM2>0?pmtCalc(bal,floatRate/100,remM2):0;
+  for(let m=done;m<tm;m++) pays.push({payment:pmtFl,rate:floatRate/100,label:'Floating'});
+  return{schedule:buildSchedule(principal,tm,pays),pmtFloat:pmtFl};
+}
+
+function calcC(principal,tenor,fixedRate){
+  const tm=tenor*12;
+  const p=pmtCalc(principal,fixedRate/100,tm);
+  const pays=Array(tm).fill(0).map(()=>({payment:p,rate:fixedRate/100,label:'Fixed Rate'}));
+  return{schedule:buildSchedule(principal,tm,pays),payment:p};
+}
+
+function calcD(principal,tenor,refRate,margin){
+  const eff=(refRate+margin)/100;
+  const tm=tenor*12;
+  const p=pmtCalc(principal,eff,tm);
+  const pays=Array(tm).fill(0).map(()=>({payment:p,rate:eff,label:'Floating (Ref+Margin)'}));
+  return{schedule:buildSchedule(principal,tm,pays),payment:p,effectiveRate:refRate+margin};
+}
+
+function buildYearly(sched){
+  const byY={};
+  sched.forEach(r=>{
+    const yr=Math.ceil(r.month/12);
+    if(!byY[yr])byY[yr]={year:yr,interest:0,principal:0};
+    byY[yr].interest+=r.interest;
+    byY[yr].principal+=r.principal;
+  });
+  return Object.values(byY).filter(y=>y.interest>0||y.principal>0);
+}
+
+// ═══════ MAIN CALCULATE ═══════
+let allSchedule=[], filteredSchedule=[], currentPage=1, amortChart=null, yearlyData=[];
+const ROWS=24;
+
+function calculate(){
+  const hp=parseFloat(document.getElementById('hargaProperti').value)||0;
+  let dp=dpMode==='pct'
+    ?hp*(parseFloat(document.getElementById('dpPct').value)||0)/100
+    :parseFloat(document.getElementById('dpNom').value)||0;
+  dp=Math.min(dp,hp);
+  const principal=Math.max(0,hp-dp);
+  const tenor=parseInt(document.getElementById('tenorTahun').value)||1;
+  if(principal<=0){alert('Plafond kredit harus lebih dari 0!');return;}
+
+  let sched,pmtFirst,pmtLast=0,showFloat=false,floatInfo='';
+
+  if(currentScheme==='A'){
+    const fR=parseFloat(document.getElementById('aFixedRate').value)||0;
+    const flR=parseFloat(document.getElementById('aFloatRate').value)||0;
+    const fY=parseInt(document.getElementById('aFixedYears').value)||0;
+    const res=calcA(principal,tenor,fR,flR,fY);
+    sched=res.schedule; pmtFirst=res.pmtFixed; pmtLast=res.pmtFloat; showFloat=true;
+    floatInfo=`Mulai bulan ${res.fixedMonths+1} s/d ${tenor*12} (${tenor*12-res.fixedMonths} bln)`;
+    document.getElementById('sc1sub').textContent=`Berlaku ${fY} thn pertama (${fY*12} bulan)`;
+  } else if(currentScheme==='B'){
+    const tiers=[1,2,3,4,5].map(i=>({rate:parseFloat(document.getElementById(`bRate${i}`).value)||0,years:parseInt(document.getElementById(`bYears${i}`).value)||0}));
+    const flR=parseFloat(document.getElementById('bFloatRate').value)||0;
+    const res=calcB(principal,tenor,tiers,flR);
+    sched=res.schedule; pmtFirst=sched[0]?.payment||0; pmtLast=res.pmtFloat; showFloat=true;
+    floatInfo='Cicilan masa floating (setelah semua jenjang fixed)';
+    document.getElementById('sc1sub').textContent='Cicilan jenjang pertama';
+  } else if(currentScheme==='C'){
+    const fR=parseFloat(document.getElementById('cFixedRate').value)||0;
+    const res=calcC(principal,tenor,fR);
+    sched=res.schedule; pmtFirst=res.payment;
+    document.getElementById('sc1sub').textContent='Tetap sepanjang tenor';
+  } else {
+    const rR=parseFloat(document.getElementById('dRefRate').value)||0;
+    const mg=parseFloat(document.getElementById('dMargin').value)||0;
+    const res=calcD(principal,tenor,rR,mg);
+    sched=res.schedule; pmtFirst=res.payment;
+    document.getElementById('sc1sub').textContent=`Rate efektif: ${(rR+mg).toFixed(2)}% p.a.`;
+    buildSensTable(principal,tenor,rR,mg);
+  }
+
+  const totalPaid=sched.reduce((a,r)=>a+r.payment,0);
+  const totalInt=sched.reduce((a,r)=>a+r.interest,0);
+  const ratio=totalInt/principal;
+
+  document.getElementById('sc1').textContent='Rp '+fmtRp(pmtFirst);
+  document.getElementById('sc2').textContent='Rp '+fmtRp(totalPaid);
+  document.getElementById('sc3').textContent='Rp '+fmtRp(totalInt);
+  document.getElementById('sc2sub').textContent=`${fmtRp(principal)} pokok + bunga`;
+  document.getElementById('sc3sub').textContent=`Rasio bunga/plafond: ${(ratio*100).toFixed(1)}%`;
+
+  if(showFloat&&pmtLast>0){
+    document.getElementById('floatCard').style.display='block';
+    document.getElementById('sc4').textContent='Rp '+fmtRp(pmtLast);
+    document.getElementById('sc4sub').textContent=floatInfo;
+  } else {
+    document.getElementById('floatCard').style.display='none';
+  }
+  document.getElementById('sensSection').style.display=currentScheme==='D'?'block':'none';
+
+  allSchedule=sched; filteredSchedule=sched; yearlyData=buildYearly(sched); currentPage=1;
+  renderTable();
+  renderChart();
+}
+
+// ═══════ SENSITIVITY ═══════
+function buildSensTable(principal,tenor,refRate,margin){
+  const rates=[4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9];
+  const curPmt=pmtCalc(principal,(refRate+margin)/100,tenor*12);
+  const tbody=document.getElementById('sensTbody');
+  tbody.innerHTML=rates.map(r=>{
+    const eff=r+margin;
+    const p=pmtCalc(principal,eff/100,tenor*12);
+    const diff=p-curPmt;
+    const cur=Math.abs(r-refRate)<0.01;
+    const cls=diff>0?'up':diff<0?'dn':'neu';
+    const diffStr=cur?'(Saat Ini)':`${diff>0?'+':'-'}Rp ${fmtRp(Math.abs(diff))}`;
+    return `<tr class="${cur?'cur':''}">
+      <td>${r.toFixed(2)}%</td>
+      <td>${eff.toFixed(2)}%</td>
+      <td>Rp ${fmtRp(p)}</td>
+      <td class="${cls}">${diffStr}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════ CHART ═══════
+function renderChart(){
+  const wrap=document.getElementById('chartWrap');
+  if(amortChart){amortChart.destroy();amortChart=null;}
+  wrap.innerHTML='<canvas id="amortCanvas"></canvas>';
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const labelColor=isDark?'#BFB89F':'#6B6560';
+  const gridColor=isDark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)';
+  const ctx=document.getElementById('amortCanvas').getContext('2d');
+  amortChart=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:yearlyData.map(y=>`Thn ${y.year}`),
+      datasets:[
+        {label:'Porsi Pokok',data:yearlyData.map(y=>Math.round(y.principal)),backgroundColor:isDark?'rgba(82,183,136,0.8)':'rgba(30,120,80,0.75)',borderRadius:3,borderSkipped:false},
+        {label:'Porsi Bunga',data:yearlyData.map(y=>Math.round(y.interest)),backgroundColor:isDark?'rgba(201,146,42,0.75)':'rgba(139,94,32,0.7)',borderRadius:3,borderSkipped:false}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:labelColor,font:{family:'Outfit',size:11},boxWidth:13}},
+        tooltip:{callbacks:{label:c=>`${c.dataset.label}: Rp ${fmtRp(c.parsed.y)}`}}
+      },
+      scales:{
+        x:{stacked:true,grid:{color:gridColor},ticks:{color:labelColor,font:{family:'DM Mono',size:9},maxRotation:45}},
+        y:{stacked:true,grid:{color:gridColor},ticks:{color:labelColor,font:{family:'DM Mono',size:9},callback:v=>{
+          if(v>=1e9)return (v/1e9).toFixed(1)+'M';
+          if(v>=1e6)return (v/1e6).toFixed(0)+'jt';
+          return v;
+        }}}
+      }
+    }
+  });
+}
+
+function exportChartJPG(){
+  if(!amortChart){alert('Hitung dulu simulasinya!');return;}
+  const canvas=document.getElementById('amortCanvas');
+  const off=document.createElement('canvas');
+  off.width=canvas.width;off.height=canvas.height;
+  const c=off.getContext('2d');
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  c.fillStyle=isDark?'#111E2F':'#FFFFFF';
+  c.fillRect(0,0,off.width,off.height);
+  c.drawImage(canvas,0,0);
+  const a=document.createElement('a');
+  a.download='Amortisasi_KPR_HendrikPanthron.jpg';
+  a.href=off.toDataURL('image/jpeg',0.95);
+  a.click();
+}
+
+// ═══════ TABLE ═══════
+const typeClassMap={'Fixed':'type-fixed','Fixed Rate':'type-fixed','Fixed P1':'type-fixed','Fixed P2':'type-fp2','Fixed P3':'type-fp3','Fixed P4':'type-fp4','Fixed P5':'type-fixed','Floating':'type-float','Floating (Ref+Margin)':'type-float'};
+
+function renderTable(){
+  const tbody=document.getElementById('amortTbody');
+  const total=filteredSchedule.length;
+  const pages=Math.ceil(total/ROWS);
+  currentPage=Math.min(currentPage,Math.max(1,pages));
+  const start=(currentPage-1)*ROWS;
+  const rows=filteredSchedule.slice(start,start+ROWS);
+  if(!rows.length){
+    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:28px;color:var(--text3)">Tidak ada data.</td></tr>';
+  } else {
+    tbody.innerHTML=rows.map(r=>`
+      <tr class="${r.isTransition?'hl-row':''}">
+        <td>${r.month}</td>
+        <td>${fmtRp(r.startBalance)}</td>
+        <td>${(r.rate*100).toFixed(2)}%</td>
+        <td>${fmtRp(r.payment)}</td>
+        <td>${fmtRp(r.interest)}</td>
+        <td>${fmtRp(r.principal)}</td>
+        <td>${fmtRp(r.endBalance)}</td>
+        <td class="${typeClassMap[r.label]||''}">${r.label}${r.isTransition?' ◆':''}</td>
+      </tr>`).join('');
+  }
+  renderPagination(pages);
+}
+
+function renderPagination(pages){
+  const pg=document.getElementById('pagination');
+  if(pages<=1){pg.innerHTML='';return;}
+  let h=`<button onclick="goPage(1)" ${currentPage===1?'disabled':''}>«</button>`;
+  h+=`<button onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+  const lo=Math.max(1,currentPage-2),hi=Math.min(pages,currentPage+2);
+  for(let p=lo;p<=hi;p++) h+=`<button class="${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+  h+=`<button onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
+  h+=`<button onclick="goPage(${pages})" ${currentPage===pages?'disabled':''}>»</button>`;
+  h+=`<span class="page-info">${currentPage}/${pages} · ${allSchedule.length} bulan</span>`;
+  pg.innerHTML=h;
+}
+function goPage(p){currentPage=p;renderTable();}
+
+function filterTable(){
+  const q=document.getElementById('tableSearch').value.trim().toLowerCase();
+  filteredSchedule=!q?allSchedule:allSchedule.filter(r=>r.month.toString().includes(q)||r.label.toLowerCase().includes(q));
+  currentPage=1;renderTable();
+}
+
+// ═══════ PDF ═══════
+function exportTablePDF(){
+  if(!allSchedule.length){alert('Hitung dulu simulasinya!');return;}
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+  doc.setFont('helvetica','bold');doc.setFontSize(13);
+  doc.text('Tabel Amortisasi KPR — Hendrik Panthron',14,14);
+  doc.setFont('helvetica','normal');doc.setFontSize(8);
+  doc.text(`Skema ${currentScheme}  |  Dicetak: ${new Date().toLocaleDateString('id-ID',{dateStyle:'full'})}`,14,20);
+  doc.setFontSize(7);doc.setTextColor(150,50,50);
+  doc.text('DISCLAIMER: Simulasi matematika. Bukan cicilan resmi bank. Tidak termasuk biaya admin, provisi, asuransi, notaris, dll.',14,26);
+  doc.setTextColor(40,40,40);
+  doc.autoTable({
+    head:[['Bulan','Saldo Awal (Rp)','Rate (%)','Cicilan (Rp)','Bunga (Rp)','Pokok (Rp)','Saldo Akhir (Rp)','Tipe']],
+    body:allSchedule.map(r=>[r.month,fmtRp(r.startBalance),(r.rate*100).toFixed(2)+'%',fmtRp(r.payment),fmtRp(r.interest),fmtRp(r.principal),fmtRp(r.endBalance),r.label+(r.isTransition?' ◆':'')]),
+    startY:30,
+    styles:{fontSize:6.5,cellPadding:1.8,halign:'right'},
+    headStyles:{fillColor:[139,94,32],textColor:[255,255,255],fontStyle:'bold'},
+    columnStyles:{0:{halign:'center'},7:{halign:'left'}},
+    alternateRowStyles:{fillColor:[248,246,242]},
+    didParseCell:({row,cell})=>{if(allSchedule[row.index]?.isTransition)cell.styles.fillColor=[255,248,220];}
+  });
+  doc.save('Amortisasi_KPR_HendrikPanthron.pdf');
+}
+
+// ═══════ GLOSSARY ═══════
+const GLOSSARY=[
+  {t:'KPR (Kredit Pemilikan Rumah)',d:'Fasilitas pinjaman dari bank untuk membiayai pembelian properti (rumah, apartemen, ruko, dll) dengan properti sebagai jaminan (agunan). Peminjam (debitur) mencicil pinjaman setiap bulan selama jangka waktu yang disepakati.'},
+  {t:'Plafond Kredit',d:'Jumlah total pokok pinjaman yang disetujui bank. Nilainya adalah Harga Properti dikurangi Uang Muka (DP). Ini adalah jumlah yang harus dikembalikan ke bank (sebelum bunga).'},
+  {t:'Uang Muka / DP (Down Payment)',d:'Pembayaran awal dari pembeli kepada penjual yang merupakan selisih harga properti dengan jumlah pinjaman. Umumnya minimal 10–30% dari harga properti sesuai ketentuan Bank Indonesia.'},
+  {t:'LTV (Loan-to-Value)',d:'Rasio antara plafond pinjaman dibandingkan nilai properti. LTV = Plafond ÷ Harga Properti × 100%. BI mengatur batas LTV: umumnya maks. 80–90% untuk rumah tapak pertama, lebih ketat untuk properti kedua/ketiga.'},
+  {t:'Tenor Kredit',d:'Jangka waktu angsuran kredit dalam tahun atau bulan. Makin panjang tenor → cicilan/bulan lebih kecil, namun total bunga yang dibayar jauh lebih besar karena bunga terakumulasi lebih lama.'},
+  {t:'Suku Bunga (Interest Rate)',d:'Persentase biaya pinjaman per tahun (p.a. = per annum) yang dibebankan bank kepada debitur. Dibedakan menjadi bunga tetap (fixed) dan bunga mengambang (floating).'},
+  {t:'Bunga Fixed (Tetap)',d:'Suku bunga yang tidak berubah selama periode fixed berlaku. Memberikan kepastian cicilan. Biasanya lebih rendah di awal sebagai daya tarik promosi, namun hanya berlaku untuk beberapa tahun pertama.'},
+  {t:'Bunga Floating (Mengambang)',d:'Suku bunga yang dapat berubah mengikuti kebijakan bank atau pergerakan suku bunga acuan (BI Rate, dll). Cicilan bisa naik atau turun. Risiko lebih tinggi namun bisa menguntungkan saat suku bunga turun.'},
+  {t:'Skema Fixed + Floating (A)',d:'Suku bunga tetap berlaku beberapa tahun pertama, kemudian berubah menjadi bunga mengambang hingga akhir tenor. Memberikan kepastian di awal kredit, kemudian mengikuti pasar.'},
+  {t:'Skema Fixed Berjenjang (B)',d:'Variasi bunga tetap di mana besaran bunga meningkat secara bertahap per periode. Contoh: 2.99% th-1, 6.49% th-2&3, 8.99% th-4&5, lalu floating. Cicilan naik bertahap mengikuti jenjang.'},
+  {t:'Skema Fixed Sepanjang Tenor (C)',d:'Bunga tetap dari awal hingga lunas. Cicilan bulanan sama setiap bulan. Memberikan kepastian penuh namun umumnya lebih tinggi dari rate promosi. Cocok untuk yang mengutamakan kepastian.'},
+  {t:'Skema Floating Ref + Margin (D)',d:'Suku bunga = Suku Bunga Referensi (misal BI Rate/SRBI/SBN/LPS) + Margin Tetap Bank. Cicilan berubah setiap kali bank mengubah bunga dasarnya mengikuti pergerakan acuan eksternal.'},
+  {t:'Amortisasi',d:'Proses pelunasan pinjaman secara bertahap melalui cicilan berkala. Di awal tenor, porsi bunga sangat dominan; di akhir tenor, porsi pokok mendominasi. Ini mengapa melunasi lebih awal menghemat bunga signifikan.'},
+  {t:'Porsi Pokok (Principal)',d:'Bagian cicilan yang mengurangi saldo utang pokok. Porsi pokok meningkat setiap bulan seiring berkurangnya bunga. Rumus: Pokok = Total Cicilan − Bunga Bulan Tersebut.'},
+  {t:'Porsi Bunga (Interest)',d:'Biaya pinjaman dalam cicilan bulanan. Dihitung dari saldo awal bulan tersebut. Rumus: Bunga = Saldo Awal × (Rate Tahunan ÷ 12). Makin besar saldo, makin besar porsi bunga.'},
+  {t:'BI Rate / 7-Day Reverse Repo Rate',d:'Suku bunga kebijakan Bank Indonesia yang menjadi acuan utama sistem keuangan Indonesia. Perubahan BI Rate berdampak langsung pada bunga KPR floating dan biaya kredit perbankan lainnya.'},
+  {t:'SRBI (Sekuritas Rupiah BI)',d:'Instrumen surat berharga Bank Indonesia dalam rangka operasi moneter. Imbal hasil SRBI kerap dijadikan acuan suku bunga referensi untuk produk KPR floating oleh perbankan Indonesia.'},
+  {t:'LPS Rate',d:'Tingkat bunga penjaminan yang ditetapkan Lembaga Penjamin Simpanan. Sering digunakan sebagai salah satu suku bunga referensi dalam skema KPR, khususnya untuk dana pihak ketiga yang terproteksi.'},
+  {t:'Margin Bank',d:'Selisih tetap antara suku bunga kredit dan suku bunga referensi/dana. Margin = keuntungan/spread bank. Ditetapkan di awal akad dan umumnya tidak berubah selama kredit berjalan.'},
+  {t:'Biaya-Biaya KPR',d:'Di luar bunga, KPR umumnya melibatkan biaya admin/provisi (0,5–1% plafond), premi asuransi jiwa & kebakaran (tahunan), biaya notaris & PPAT, biaya appraisal properti, PPN, BPHTB, dan biaya lain yang bervariasi antar bank.'}
+];
+
+function initGlossary(){
+  document.getElementById('glossaryGrid').innerHTML=GLOSSARY.map((g,i)=>`
+    <div class="gterm" id="gt${i}">
+      <div class="gterm-head" onclick="toggleGloss(${i})">
+        <span class="gterm-badge">!</span>
+        <h4>${g.t}</h4>
+        <span class="arrow">+</span>
+      </div>
+      <div class="gterm-body">${g.d}</div>
+    </div>`).join('');
+}
+function toggleGloss(i){document.getElementById('gt'+i).classList.toggle('open')}
+
+initGlossary();
+</script>
+</body>
+</html>
