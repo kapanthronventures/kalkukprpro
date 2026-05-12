@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — Finding Mainera</title>
+<meta name="description" content="The page you are looking for could not be found at Finding Mainera Gallery.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/css/gallery.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fff'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='Georgia,serif' font-size='22' fill='%230f0e0d'%3EFM%3C/text%3E%3C/svg%3E">
+<style>
+  body { background: var(--canvas); }
+  .nf {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 6rem var(--gutter);
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+  .nf__art { aspect-ratio: 4 / 5; background: var(--paper); overflow: hidden; box-shadow: var(--shadow-frame); }
+  .nf__art .canvas-art { width: 100%; height: 100%; }
+  .nf h1 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 1;
+    margin-bottom: 1.4rem;
+  }
+  .nf h1 em { font-style: italic; color: var(--ink-3); }
+  .nf p { color: var(--ink-2); font-family: var(--serif); font-size: clamp(1.1rem, 1.6vw, 1.4rem); font-style: italic; max-width: 28rem; margin-bottom: 2rem; line-height: 1.5; }
+  .nf__cta { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+  .nf__code { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.18em; color: var(--ink-3); margin-bottom: 2rem; text-transform: uppercase; }
+  @media (max-width: 880px) {
+    .nf { grid-template-columns: 1fr; min-height: auto; padding-top: 4rem; padding-bottom: 4rem; }
+  }
+</style>
+</head>
+
+<body>
+<header class="nav" aria-label="Primary">
+  <a class="nav__brand" href="/"><strong>Finding Mainera</strong> <small>Gallery</small></a>
+  <nav><ul class="nav__menu">
+    <li><a href="/">Works</a></li>
+    <li><a href="/gallery.html">Archive</a></li>
+    <li><a href="/artist.html">Artists</a></li>
+    <li><a href="/exhibitions.html">Exhibitions</a></li>
+  </ul></nav>
+  <div class="nav__actions"><a class="btn btn--ghost btn--mini" href="/auth.html">Sign in</a></div>
+</header>
+
+<main class="nf">
+  <div>
+    <p class="nf__code">404 · Page not found</p>
+    <h1>The work<br>has been<br><em>quietly moved.</em></h1>
+    <p>"Some rooms in a gallery hold only the memory of what used to hang there. This is one of them."</p>
+    <div class="nf__cta">
+      <a class="btn" href="/">Return to the gallery</a>
+      <a class="btn btn--ghost" href="/gallery.html">Open the archive</a>
+    </div>
+  </div>
+  <div class="nf__art" aria-hidden="true">
+    <div class="canvas-art" data-overlay="The work you&#10;were looking for&#10;is no longer&#10;on this wall."></div>
+  </div>
+</main>
+
+<footer class="footer" aria-label="Footer">
+  <div class="footer__sub" style="border-top:0;">
+    <span>© <script>document.write(new Date().getFullYear())</script> Finding Mainera. All works © the individual artists.</span>
+    <span><a href="/">Home</a> · <a href="/artist.html">Artists</a> · <a href="/exhibitions.html">Exhibitions</a></span>
+  </div>
+</footer>
+</body>
+</html>

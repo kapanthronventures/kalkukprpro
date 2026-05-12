@@ -1,0 +1,13 @@
+# Files in this list are NOT uploaded as public assets to Cloudflare.
+# Same syntax as .gitignore.
+
+.git
+.gitignore
+.assetsignore
+wrangler.jsonc
+wrangler.toml
+README.md
+ARCHITECTURE.md
+node_modules
+.DS_Store
+*.log
