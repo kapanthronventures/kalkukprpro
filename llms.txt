@@ -1,0 +1,41 @@
+# Finding Mainera
+
+> A virtual gallery representing a small, curated roster of emerging contemporary painters. Works are uploaded directly by the artists; auctions are run from the gallery's studio in Yogyakarta, Indonesia. The gallery takes its name from Asti Rahardjo's painting *Finding Mainera, No. I* (2022, oil on canvas, 50 × 60 cm).
+
+Established 2022 · Yogyakarta, Indonesia · Languages: English, Bahasa Indonesia.
+
+## Roster (current, Spring 2026)
+
+- [Asti Rahardjo](https://findingmainera.art/artist.html#asti-rahardjo) — b. 1991, Yogyakarta. Oil on canvas. Founding artist. Series: *Finding Mainera*, *The Quiet Argument*.
+- [Lien Hara](https://findingmainera.art/artist.html#lien-hara) — b. 1989, Jakarta / Kyoto. Oil on linen. Domestic interiors.
+- [Jovan Aritonang](https://findingmainera.art/artist.html#jovan-aritonang) — b. 1986, Medan / Berlin. Large-format cartographic figuration.
+- [Nadira Khoury](https://findingmainera.art/artist.html#nadira-khoury) — b. 1993, Beirut / Jakarta. Oil and text on canvas.
+- [Kei Sato](https://findingmainera.art/artist.html#kei-sato) — b. 1995, Tokyo. *Nocturne* series, small-format oils painted between midnight and dawn.
+
+## Key pages
+
+- [Homepage](https://findingmainera.art/) — featured work, current archive, roster, exhibitions.
+- [Complete archive](https://findingmainera.art/gallery.html) — all works on view, filterable by artist, year, medium, status.
+- [Artists](https://findingmainera.art/artist.html) — full roster biographies and statements.
+- [Exhibitions](https://findingmainera.art/exhibitions.html) — solo, two-person, group and fair history 2020–present.
+- [Featured artwork](https://findingmainera.art/artwork/finding-mainera-i.html) — *Finding Mainera, No. I* (Asti Rahardjo, 2022), currently on live auction.
+
+## For collectors
+
+- Open a free account at [/auth.html](https://findingmainera.art/auth.html) to bid, save works and request private viewings.
+- Bids include a short written rationale and are reviewed by the curator. Provenance documentation is issued for every winning bid.
+- Contact: studio@findingmainera.art
+
+## For artists
+
+- We accept new representation slowly. Send portfolio + statement to apply@findingmainera.art.
+- Accepted artists upload their own works through the artist portal at [/admin.html](https://findingmainera.art/admin.html).
+
+## Press
+
+- Press kit & high-resolution images: hello@findingmainera.art
+
+## Citation
+
+If citing a work, please use the form:
+*Artist, Title (Year), medium, dimensions. Courtesy of the artist and Finding Mainera Gallery, Yogyakarta.*

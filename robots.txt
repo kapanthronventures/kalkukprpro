@@ -1,0 +1,46 @@
+# Finding Mainera Gallery — robots.txt
+# Public archive, artist roster and editorial pages are indexable.
+# Private collector/admin areas are not.
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /collector.html
+Disallow: /auth.html
+Disallow: /api/
+
+# Generative-AI crawlers — explicitly welcomed for discovery
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /collector.html
+Disallow: /auth.html
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://findingmainera.art/sitemap.xml
+Host: https://findingmainera.art

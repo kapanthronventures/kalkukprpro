@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio Admin — Finding Mainera</title>
+<meta name="description" content="Studio administration for Finding Mainera Gallery. Super-admin and per-artist portal for managing artworks, exhibitions, bids, comments, collectors and SEO metadata.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="./css/gallery.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fff'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='Georgia,serif' font-size='22' fill='%230f0e0d'%3EFM%3C/text%3E%3C/svg%3E">
+
+<style>
+  body { background: var(--paper); }
+  .upload {
+    border: 1px dashed var(--line-2);
+    background: var(--canvas);
+    padding: 2.5rem;
+    text-align: center;
+    color: var(--ink-3);
+    margin-bottom: 1.5rem;
+  }
+  .upload strong { color: var(--ink); display: block; font-family: var(--serif); font-size: 1.4rem; margin-bottom: 0.4rem; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  @media (max-width: 720px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--canvas);
+    border: 1px solid var(--line);
+    padding: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .card h3 {
+    font-family: var(--sans);
+    font-size: 0.74rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+  }
+  .role-banner {
+    background: var(--ink);
+    color: var(--canvas);
+    padding: 0.5rem 0.9rem;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .role-banner::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: #6FCF97;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="admin-shell">
+  <aside aria-label="Admin navigation">
+    <a class="nav__brand" href="./" style="font-family:var(--serif); font-size:1.15rem;">Finding Mainera<br><small style="font-family:var(--sans); font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-3);">Studio · Admin</small></a>
+    <div style="margin-top:1.6rem;">
+      <span class="role-banner">SUPER ADMIN · CURATOR</span>
+    </div>
+
+    <nav class="admin-nav" style="margin-top:2rem;">
+      <small>Curate</small>
+      <a href="#" aria-current="page">Dashboard</a>
+      <a href="#works">Works</a>
+      <a href="#artists">Artists</a>
+      <a href="#exhibitions">Exhibitions</a>
+      <a href="#auctions">Auctions &amp; bids</a>
+      <a href="#comments">Comments</a>
+
+      <small>Collectors</small>
+      <a href="#collectors">Accounts</a>
+      <a href="#inquiries">Inquiries</a>
+
+      <small>Site</small>
+      <a href="#homepage">Homepage modules</a>
+      <a href="#seo">SEO &amp; metadata</a>
+      <a href="#essays">Essays &amp; press</a>
+      <a href="#settings">Settings</a>
+
+      <small>Account</small>
+      <a href="./auth.html">Sign out</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="admin-head">
+      <div>
+        <p class="eyebrow">Signed in as <strong style="color:var(--ink);">curator@findingmainera.art</strong></p>
+        <h1 style="font-size: 2.2rem; margin-top:0.4rem;">Studio dashboard.</h1>
+      </div>
+      <div style="display:flex; gap:0.6rem;">
+        <a class="btn btn--line btn--mini" href="./" target="_blank">View site ↗</a>
+        <button class="btn btn--mini">+ New work</button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi__label">Works on view</div><div class="kpi__value">12</div><div class="kpi__delta">+2 this month</div></div>
+      <div class="kpi"><div class="kpi__label">Active artists</div><div class="kpi__value">5</div><div class="kpi__delta">+1 this month</div></div>
+      <div class="kpi"><div class="kpi__label">Live bids</div><div class="kpi__value">4</div><div class="kpi__delta">2 closing today</div></div>
+      <div class="kpi"><div class="kpi__label">Collector accounts</div><div class="kpi__value">218</div><div class="kpi__delta">+14 this week</div></div>
+      <div class="kpi"><div class="kpi__label">Inquiries (30d)</div><div class="kpi__value">38</div><div class="kpi__delta kpi__delta--down">−3 vs prior</div></div>
+      <div class="kpi"><div class="kpi__label">Avg. bid (IDR)</div><div class="kpi__value">42 M</div><div class="kpi__delta">+12% MoM</div></div>
+    </div>
+
+    <!-- Upload module -->
+    <section class="card" id="works">
+      <h3>Upload a new work</h3>
+      <p class="meta" style="margin-bottom:1.2rem;">Each artist uploads their own works through this same form. The super-admin can publish on behalf of any artist on the roster.</p>
+
+      <div class="upload">
+        <strong>Drop images here</strong>
+        Up to 12 images per work · JPG, PNG, WebP, TIFF · max 25 MB each
+        <div style="margin-top:1rem;"><button class="btn btn--line btn--mini">Browse files</button></div>
+      </div>
+
+      <form class="bid__form" onsubmit="event.preventDefault(); alert('Demo only — see ARCHITECTURE.md for the production upload pipeline.');">
+        <div class="grid-2">
+          <div class="field"><label>Title</label><input placeholder="Finding Mainera, No. VII"></div>
+          <div class="field"><label>Title (Indonesian)</label><input placeholder="Menemukan Mainera, No. VII"></div>
+        </div>
+        <div class="grid-3">
+          <div class="field"><label>Artist</label>
+            <select>
+              <option>Asti Rahardjo</option>
+              <option>Lien Hara</option>
+              <option>Jovan Aritonang</option>
+              <option>Nadira Khoury</option>
+              <option>Kei Sato</option>
+              <option>— Invite new artist —</option>
+            </select>
+          </div>
+          <div class="field"><label>Year</label><input type="number" value="2026" min="1900" max="2100"></div>
+          <div class="field"><label>Inventory no.</label><input value="FM-AR-2026-007"></div>
+        </div>
+        <div class="grid-3">
+          <div class="field"><label>Medium</label><input placeholder="Oil on canvas"></div>
+          <div class="field"><label>Width (cm)</label><input type="number" placeholder="50"></div>
+          <div class="field"><label>Height (cm)</label><input type="number" placeholder="60"></div>
+        </div>
+
+        <div class="field"><label>Curatorial text</label><textarea placeholder="Curatorial framing for collectors and the public."></textarea></div>
+        <div class="field"><label>Artist's note (private to studio)</label><textarea placeholder="What was happening in the studio while this was being made?"></textarea></div>
+
+        <div class="grid-3">
+          <div class="field"><label>Status</label>
+            <select><option>Draft</option><option>Available · by inquiry</option><option>Available · with price</option><option selected>Live auction</option><option>Sold · private collection</option><option>Withdrawn</option></select>
+          </div>
+          <div class="field"><label>Reserve / start (IDR)</label><input type="number" placeholder="50000000"></div>
+          <div class="field"><label>Auction closes</label><input type="datetime-local"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field"><label>SEO title</label><input placeholder="Finding Mainera, No. VII — Asti Rahardjo (2026)"></div>
+          <div class="field"><label>SEO description</label><input placeholder="Oil on canvas, 50 × 60 cm. Live auction at Finding Mainera Gallery."></div>
+        </div>
+
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+          <button class="btn" type="submit">Publish work</button>
+          <button class="btn btn--ghost" type="button">Save as draft</button>
+          <button class="btn btn--ghost" type="button">Preview</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Existing works -->
+    <section class="card">
+      <h3>Manage existing works</h3>
+      <table class="table" aria-label="Works">
+        <thead>
+          <tr><th>Work</th><th>Artist</th><th>Year</th><th>Status</th><th>Top bid</th><th>Visibility</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr><td><em>Finding Mainera, No. I</em></td><td>Asti Rahardjo</td><td>2022</td><td><span class="pill pill--auction">Auction</span></td><td>IDR 48.0M</td><td>Public</td><td><a href="./artwork/finding-mainera-i.html">Open</a></td></tr>
+          <tr><td><em>The Quiet Argument</em></td><td>Asti Rahardjo</td><td>2024</td><td><span class="pill pill--draft">Auction · scheduled</span></td><td>—</td><td>Public</td><td><a href="#">Edit</a></td></tr>
+          <tr><td><em>Interior with Two Lamps</em></td><td>Lien Hara</td><td>2023</td><td><span class="pill pill--available">Available</span></td><td>—</td><td>Public</td><td><a href="#">Edit</a></td></tr>
+          <tr><td><em>Cartography (For My Mother)</em></td><td>Jovan Aritonang</td><td>2023</td><td><span class="pill pill--available">Available</span></td><td>—</td><td>Public</td><td><a href="#">Edit</a></td></tr>
+          <tr><td><em>Letter, Unanswered</em></td><td>Nadira Khoury</td><td>2024</td><td><span class="pill pill--sold">Sold</span></td><td>IDR 84.0M</td><td>Public · sold</td><td><a href="#">Open</a></td></tr>
+          <tr><td><em>Nocturne, IV</em></td><td>Kei Sato</td><td>2024</td><td><span class="pill pill--available">Available</span></td><td>—</td><td>Public</td><td><a href="#">Edit</a></td></tr>
+          <tr><td><em>Study, Untitled</em></td><td>Kei Sato</td><td>2025</td><td><span class="pill pill--draft">Draft</span></td><td>—</td><td>Hidden</td><td><a href="#">Edit</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Bids -->
+    <section class="card" id="auctions">
+      <h3>Live bids — curatorial review</h3>
+      <table class="table" aria-label="Bids">
+        <thead><tr><th>Time</th><th>Work</th><th>Bidder</th><th>Amount</th><th>Why this price</th><th>Decision</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>14:22</td><td><em>Finding Mainera, No. I</em></td><td>Collector ××-381 · Jakarta</td><td>IDR 48.0M</td>
+            <td style="font-family:var(--serif);font-style:italic;color:var(--ink-2);max-width:22rem;">"My partner has lived for two years with a Rahardjo study. We would like this one to live in our reading room — same wall, opposite light."</td>
+            <td><a href="#" style="color:var(--sage);">Accept</a> · <a href="#" style="color:var(--rust);">Decline</a></td>
+          </tr>
+          <tr>
+            <td>13:55</td><td><em>Finding Mainera, No. I</em></td><td>Collector ××-117 · Singapore</td><td>IDR 46.0M</td>
+            <td style="font-family:var(--serif);font-style:italic;color:var(--ink-2);max-width:22rem;">"I have followed the series since the Cemeti show. This is the one I keep returning to."</td>
+            <td><a href="#" style="color:var(--sage);">Accept</a> · <a href="#" style="color:var(--rust);">Decline</a></td>
+          </tr>
+          <tr>
+            <td>12:08</td><td><em>The Quiet Argument</em></td><td>Collector ××-204 · Hong Kong</td><td>IDR 92.0M</td>
+            <td style="font-family:var(--serif);font-style:italic;color:var(--ink-2);max-width:22rem;">"For the foundation. We would like to lend it to ROH as part of next year's biennale loan."</td>
+            <td><a href="#" style="color:var(--sage);">Accept</a> · <a href="#" style="color:var(--rust);">Decline</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Comments -->
+    <section class="card" id="comments">
+      <h3>Comments awaiting moderation</h3>
+      <div class="comments">
+        <article class="comment">
+          <div class="comment__avatar">A</div>
+          <div>
+            <div class="comment__head">
+              <span class="comment__name">Anonymous</span>
+              <span class="comment__time">on <em>Finding Mainera, No. I</em> · 12 min ago</span>
+            </div>
+            <p class="comment__body">I cannot stop staring at the mirror's edge. It is the only sharp thing.</p>
+            <div style="display:flex; gap:0.6rem; margin-top:0.6rem;">
+              <button class="btn btn--mini">Approve</button>
+              <button class="btn btn--ghost btn--mini">Reject</button>
+              <button class="btn btn--ghost btn--mini">Flag</button>
+            </div>
+          </div>
+        </article>
+        <article class="comment">
+          <div class="comment__avatar">P</div>
+          <div>
+            <div class="comment__head">
+              <span class="comment__name">Putra W.</span>
+              <span class="comment__role">Collector</span>
+              <span class="comment__time">on <em>Cartography (For My Mother)</em> · 2 h ago</span>
+            </div>
+            <p class="comment__body">Reminds me of my own mother's handwriting on the back of envelopes. Quiet and absolutely accurate.</p>
+            <div style="display:flex; gap:0.6rem; margin-top:0.6rem;">
+              <button class="btn btn--mini">Approve</button>
+              <button class="btn btn--ghost btn--mini">Reject</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Artists roster -->
+    <section class="card" id="artists">
+      <h3>Roster &amp; artist accounts</h3>
+      <table class="table">
+        <thead><tr><th>Artist</th><th>Joined</th><th>Works</th><th>Last upload</th><th>Account</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Asti Rahardjo</td><td>Apr 2022</td><td>4</td><td>2 days ago</td><td><span class="pill pill--available">Active</span></td><td><a href="#">Open</a></td></tr>
+          <tr><td>Lien Hara</td><td>Sep 2022</td><td>3</td><td>11 days ago</td><td><span class="pill pill--available">Active</span></td><td><a href="#">Open</a></td></tr>
+          <tr><td>Jovan Aritonang</td><td>Feb 2023</td><td>2</td><td>1 month ago</td><td><span class="pill pill--available">Active</span></td><td><a href="#">Open</a></td></tr>
+          <tr><td>Nadira Khoury</td><td>Aug 2023</td><td>2</td><td>3 days ago</td><td><span class="pill pill--available">Active</span></td><td><a href="#">Open</a></td></tr>
+          <tr><td>Kei Sato</td><td>Jan 2024</td><td>3</td><td>5 hours ago</td><td><span class="pill pill--available">Active</span></td><td><a href="#">Open</a></td></tr>
+          <tr><td>— Pending invitations —</td><td>—</td><td>—</td><td>—</td><td><span class="pill pill--draft">2 pending</span></td><td><a href="#">Review</a></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:1rem;">
+        <button class="btn btn--line btn--mini">+ Invite artist</button>
+      </div>
+    </section>
+
+    <!-- SEO / Homepage modules -->
+    <section class="card" id="seo">
+      <h3>SEO &amp; AI-search metadata</h3>
+      <div class="grid-2">
+        <div class="field"><label>Site title</label><input value="Finding Mainera — A Slow Gallery for Emerging Painters"></div>
+        <div class="field"><label>Site description</label><input value="A virtual gallery representing a curated roster of emerging contemporary painters."></div>
+        <div class="field"><label>Default OG image</label><input value="/assets/og.jpg"></div>
+        <div class="field"><label>Twitter handle</label><input value="@findingmainera"></div>
+        <div class="field"><label>Schema.org type (org)</label><input value="ArtGallery" readonly></div>
+        <div class="field"><label>JSON-LD validator</label><input value="Valid · last checked 2 min ago" readonly style="color:var(--sage);"></div>
+      </div>
+      <p class="meta" style="margin-top:1rem;">AI-search snapshot last refreshed 14 min ago · ChatGPT &amp; Perplexity indexers granted · llms.txt published at <code class="mono">/llms.txt</code>.</p>
+    </section>
+
+    <section class="card" id="homepage">
+      <h3>Homepage modules · order &amp; visibility</h3>
+      <table class="table">
+        <thead><tr><th>Module</th><th>Type</th><th>Visible</th><th>Order</th></tr></thead>
+        <tbody>
+          <tr><td>Hero — A slow gallery</td><td>Hero</td><td>Yes</td><td>1</td></tr>
+          <tr><td>Featured work — Finding Mainera, No. I</td><td>Spotlight</td><td>Yes</td><td>2</td></tr>
+          <tr><td>Currently on view (12 works)</td><td>Archive grid</td><td>Yes</td><td>3</td></tr>
+          <tr><td>Roster · five painters</td><td>Roster grid</td><td>Yes</td><td>4</td></tr>
+          <tr><td>Curatorial letter</td><td>Editorial</td><td>Yes</td><td>5</td></tr>
+          <tr><td>Selected exhibitions</td><td>Timeline</td><td>Yes</td><td>6</td></tr>
+          <tr><td>Collector / artist banner</td><td>CTA</td><td>Yes</td><td>7</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <p class="meta" style="margin-top:2rem; text-align:center; font-style:italic;">
+      This is the static UI for the studio admin. The full production stack — auth, role-based permissions, image processing, auction state machine, audit log — is specified in
+      <a href="./ARCHITECTURE.md" style="border-bottom:1px solid var(--ink-3);">ARCHITECTURE.md</a>.
+    </p>
+  </main>
+</div>
+
+<script src="./js/gallery.js" defer></script>
+</body>
+</html>

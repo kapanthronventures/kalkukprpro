@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in — Finding Mainera</title>
+<meta name="description" content="Sign in or open an account at Finding Mainera Gallery. Collectors bid, save and follow auctions. Artists upload works through the artist portal.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="./css/gallery.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fff'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='Georgia,serif' font-size='22' fill='%230f0e0d'%3EFM%3C/text%3E%3C/svg%3E">
+
+<style>
+  body { background: var(--paper); }
+  .auth-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .auth-art {
+    background: var(--ink);
+    color: var(--canvas);
+    padding: clamp(2rem, 4vw, 4rem);
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-art .canvas-art {
+    position: absolute; inset: 0; opacity: 0.55;
+  }
+  .auth-art > * { position: relative; z-index: 1; }
+  .auth-art h2 { color: var(--canvas); font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.1; max-width: 18ch; }
+  .auth-art p { color: rgba(255,255,255,0.78); max-width: 30rem; }
+  .auth-art figcaption {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+  .auth-panel {
+    padding: clamp(2rem, 4vw, 5rem);
+    background: var(--canvas);
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 32rem; width: 100%;
+    margin: 0 auto;
+  }
+  .auth-panel h1 { font-size: clamp(2rem, 3.5vw, 2.8rem); margin-bottom: 0.4rem; }
+  .auth-panel p.meta { margin-bottom: 2rem; }
+  .auth-tabs { display:flex; border: 1px solid var(--line-2); margin-bottom: 1.6rem; }
+  .auth-tabs button {
+    flex: 1; background: transparent; border: 0; padding: 0.85rem;
+    font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-3); cursor: pointer; transition: all 200ms var(--ease);
+  }
+  .auth-tabs button[aria-selected="true"] { background: var(--ink); color: var(--canvas); }
+  .oauth { display:grid; gap: 0.6rem; margin-bottom: 1.4rem; }
+  .oauth button {
+    background: var(--canvas); border: 1px solid var(--line-2); padding: 0.85rem 1rem;
+    font-family: var(--sans); font-size: 0.86rem; color: var(--ink); cursor: pointer;
+    display:flex; align-items: center; gap: 0.7rem; transition: border-color 200ms var(--ease);
+  }
+  .oauth button:hover { border-color: var(--ink); }
+  .or {
+    text-align:center; color: var(--ink-4); font-size: 0.72rem;
+    letter-spacing: 0.18em; text-transform: uppercase; margin: 1.4rem 0;
+    position: relative;
+  }
+  .or::before, .or::after {
+    content: ""; position: absolute; top: 50%; width: calc(50% - 30px); height: 1px; background: var(--line);
+  }
+  .or::before { left: 0; }
+  .or::after { right: 0; }
+  .auth-foot { font-size: 0.82rem; color: var(--ink-3); margin-top: 1.6rem; }
+  .auth-foot a { border-bottom: 1px solid var(--line-2); }
+  @media (max-width: 880px) {
+    .auth-shell { grid-template-columns: 1fr; }
+    .auth-art { display: none; }
+  }
+</style>
+</head>
+
+<body>
+<div class="auth-shell">
+
+  <aside class="auth-art" aria-hidden="true">
+    <div class="canvas-art" data-overlay="To find&#10;the one&#10;you painted&#10;you must&#10;become&#10;her first."></div>
+    <a href="./" class="nav__brand" style="color:var(--canvas);">Finding Mainera <small style="color:rgba(255,255,255,0.7);">Gallery</small></a>
+    <div>
+      <p class="eyebrow" style="color:rgba(255,255,255,0.55);">Founding work</p>
+      <h2 style="margin: 1rem 0;">Whoever I am painting,<br>I am looking for.</h2>
+      <p>Open a collector account to bid in live auctions, save works to private folders, request studio viewings, and receive personal dispatches from the artists.</p>
+    </div>
+    <figcaption>Asti Rahardjo · <em>Finding Mainera, No. I</em> · 2022</figcaption>
+  </aside>
+
+  <main class="auth-panel">
+    <a href="./" class="meta" style="margin-bottom:2rem; display:inline-block;">← Back to the gallery</a>
+
+    <h1>Welcome back.</h1>
+    <p class="meta">Sign in to continue. New here? <a href="#" id="switch-mode" style="border-bottom:1px solid var(--ink-3);">Open an account</a>.</p>
+
+    <div class="auth-tabs" role="tablist" aria-label="Account type">
+      <button role="tab" aria-selected="true">Collector</button>
+      <button role="tab" aria-selected="false">Artist</button>
+    </div>
+
+    <div class="oauth">
+      <button type="button">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.71-1.58 2.68-3.9 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.92v2.32A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 0 1 3.68 9c0-.6.1-1.18.29-1.72V4.96H.92A9 9 0 0 0 0 9c0 1.45.35 2.82.92 4.04l3.05-2.32z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.46 3.44 1.35l2.58-2.58A9 9 0 0 0 9 0 9 9 0 0 0 .92 4.96l3.05 2.32C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+        Continue with Google
+      </button>
+      <button type="button">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#000" d="M14.06 9.55c0-1.4.78-2.4 1.92-3.05-.65-.93-1.62-1.45-2.93-1.55-1.24-.1-2.6.72-3.1.72-.52 0-1.7-.7-2.78-.68-1.42.02-2.74.82-3.47 2.08-1.5 2.6-.38 6.43 1.07 8.55.7 1.05 1.55 2.22 2.62 2.18 1.05-.04 1.45-.68 2.7-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.05 2.55-2.1.8-1.2 1.13-2.37 1.15-2.43-.02-.02-2.18-.83-2.2-3.3zM12.1 3.95c.58-.7 1-1.7.9-2.7-.86.03-1.92.58-2.53 1.27-.54.6-1.03 1.6-.9 2.58.95.08 1.93-.48 2.53-1.15z"/></svg>
+        Continue with Apple
+      </button>
+    </div>
+
+    <div class="or">or with email</div>
+
+    <form class="bid__form" onsubmit="event.preventDefault(); alert('Demo only — production auth uses NextAuth with magic link + WebAuthn. See ARCHITECTURE.md §4.');">
+      <div class="field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
+      <div class="field"><label>Password</label><input type="password" required minlength="8" placeholder="••••••••"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.8rem; color:var(--ink-3);">
+          <input type="checkbox"> Stay signed in
+        </label>
+        <a href="#" style="font-size:0.8rem; color:var(--ink-3); border-bottom:1px solid var(--line-2);">Forgot password?</a>
+      </div>
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+
+    <p class="auth-foot">
+      By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy</a>. Collectors are verified before their first bid is published — usually within 24 hours.
+    </p>
+  </main>
+</div>
+
+<script>
+  // simple two-mode toggle
+  document.querySelectorAll('.auth-tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.auth-tabs button').forEach(x => x.setAttribute('aria-selected', 'false'));
+      b.setAttribute('aria-selected', 'true');
+    });
+  });
+  document.getElementById('switch-mode')?.addEventListener('click', e => {
+    e.preventDefault();
+    const h = document.querySelector('h1');
+    h.textContent = h.textContent === 'Welcome back.' ? 'Open an account.' : 'Welcome back.';
+  });
+</script>
+</body>
+</html>

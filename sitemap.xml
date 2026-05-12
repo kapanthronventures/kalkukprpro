@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://findingmainera.art/</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://findingmainera.art/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://findingmainera.art/id/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://findingmainera.art/"/>
+    <image:image>
+      <image:loc>https://findingmainera.art/assets/og.jpg</image:loc>
+      <image:title>Finding Mainera — Virtual Gallery</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://findingmainera.art/gallery.html</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://findingmainera.art/artist.html</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://findingmainera.art/exhibitions.html</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://findingmainera.art/artwork/finding-mainera-i.html</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://findingmainera.art/assets/artworks/finding-mainera-i.jpg</image:loc>
+      <image:title>Finding Mainera, No. I — Asti Rahardjo (2022)</image:title>
+      <image:caption>Oil on canvas, 50 × 60 cm. The opening work of the eponymous series.</image:caption>
+    </image:image>
+  </url>
+
+</urlset>

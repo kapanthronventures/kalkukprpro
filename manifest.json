@@ -1,0 +1,33 @@
+{
+  "name": "Finding Mainera — Virtual Gallery",
+  "short_name": "Finding Mainera",
+  "description": "A virtual gallery representing a curated roster of emerging contemporary painters. Browse the archive, follow live auctions and acquire works directly from the studio.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f0e0d",
+  "orientation": "portrait-primary",
+  "categories": ["art", "gallery", "auction", "lifestyle"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%23fff'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='Georgia,serif' font-size='128' fill='%230f0e0d'%3EFM%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23fff'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='Georgia,serif' font-size='340' fill='%230f0e0d'%3EFM%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Current auction", "short_name": "Auction", "url": "/artwork/finding-mainera-i.html" },
+    { "name": "Archive",         "short_name": "Archive",  "url": "/gallery.html" },
+    { "name": "Artists",         "short_name": "Artists",  "url": "/artist.html" }
+  ]
+}
