@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collector dashboard — Finding Mainera</title>
+<meta name="description" content="Your private collector dashboard at Finding Mainera Gallery — saved works, active bids, acquisition history and private viewings.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="./css/gallery.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fff'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='Georgia,serif' font-size='22' fill='%230f0e0d'%3EFM%3C/text%3E%3C/svg%3E">
+
+<style>
+  .panel { background: var(--canvas); border: 1px solid var(--line); padding: 1.6rem; margin-bottom: 1.5rem; }
+  .panel h3 { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; margin-bottom: 1.2rem; }
+</style>
+</head>
+
+<body>
+<a href="#main" class="skip">Skip to content</a>
+<header class="nav" aria-label="Primary">
+  <a class="nav__brand" href="/"><strong>Finding Mainera</strong> <small>Gallery</small></a>
+  <button class="nav__burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <nav><ul class="nav__menu">
+    <li><a href="./">Works</a></li><li><a href="./gallery.html">Archive</a></li>
+    <li><a href="./artist.html">Artists</a></li><li><a href="./exhibitions.html">Exhibitions</a></li>
+    <li><a href="./artwork/finding-mainera-i.html">Auction</a></li>
+  </ul></nav>
+  <div class="nav__actions"><a class="btn btn--ghost btn--mini" href="./auth.html">Sign out</a></div>
+</header>
+
+<main id="main" style="padding-top:7rem;">
+  <section class="shell" style="padding-block: clamp(2rem, 5vw, 4rem); background: var(--paper); padding-inline: var(--gutter); margin-inline: calc(var(--gutter) * -1);">
+    <div class="shell" style="padding-inline:0;">
+
+      <div class="admin-head fade-up">
+        <div>
+          <p class="eyebrow">Collector account · verified</p>
+          <h1 style="font-size: clamp(2.2rem, 4vw, 3.4rem); margin-top: 0.4rem;">Welcome, <em style="font-style:italic;">Tanya.</em></h1>
+          <p class="meta" style="margin-top:0.4rem;">Collector ID · FM-C-2024-0381 · Joined Jan 2024</p>
+        </div>
+        <div style="display:flex; gap:0.6rem;">
+          <a class="btn btn--line btn--mini" href="./gallery.html">Browse archive</a>
+          <a class="btn btn--mini" href="./artwork/finding-mainera-i.html">Place a bid</a>
+        </div>
+      </div>
+
+      <div class="kpi-grid fade-up">
+        <div class="kpi"><div class="kpi__label">Saved works</div><div class="kpi__value">7</div></div>
+        <div class="kpi"><div class="kpi__label">Active bids</div><div class="kpi__value">2</div><div class="kpi__delta">1 closing today</div></div>
+        <div class="kpi"><div class="kpi__label">Acquisitions</div><div class="kpi__value">3</div><div class="kpi__delta">since 2024</div></div>
+        <div class="kpi"><div class="kpi__label">Studio dispatches</div><div class="kpi__value">14</div></div>
+      </div>
+
+      <section class="panel">
+        <h3>Active bids</h3>
+        <table class="table">
+          <thead><tr><th>Work</th><th>Artist</th><th>Your bid</th><th>Top bid</th><th>Closes</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><em>Finding Mainera, No. I</em></td><td>Asti Rahardjo</td><td>IDR 48.0M</td><td style="color:var(--sage);">You are top</td><td>2 d 14 h</td><td><a href="./artwork/finding-mainera-i.html">Open</a></td></tr>
+            <tr><td><em>The Quiet Argument</em></td><td>Asti Rahardjo</td><td>IDR 88.0M</td><td>IDR 92.0M</td><td>5 d 04 h</td><td><a href="./artwork/finding-mainera-i.html">Raise →</a></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="panel">
+        <h3>Saved &amp; followed</h3>
+        <div class="archive">
+          <a href="./artwork/finding-mainera-i.html" class="work">
+            <div class="work__frame"><div class="canvas-art" data-overlay=""></div></div>
+            <p class="meta">Asti Rahardjo</p>
+            <h3 class="work__title">Finding Mainera, No. I</h3>
+            <p class="work__meta">Following auction</p>
+          </a>
+          <a href="./artwork/finding-mainera-i.html" class="work">
+            <div class="work__frame"><div class="canvas-art canvas-art--alt" data-overlay=""></div></div>
+            <p class="meta">Lien Hara</p>
+            <h3 class="work__title">Interior with Two Lamps</h3>
+            <p class="work__meta">Saved · available</p>
+          </a>
+          <a href="./artwork/finding-mainera-i.html" class="work">
+            <div class="work__frame"><div class="canvas-art canvas-art--ink" data-overlay=""></div></div>
+            <p class="meta">Nadira Khoury</p>
+            <h3 class="work__title">The Same Letter, Again</h3>
+            <p class="work__meta">Saved · available</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Acquisition history</h3>
+        <table class="table">
+          <thead><tr><th>Date</th><th>Work</th><th>Artist</th><th>Price</th><th>Provenance doc.</th></tr></thead>
+          <tbody>
+            <tr><td>Sep 2024</td><td><em>A Window Facing East</em></td><td>Lien Hara</td><td>IDR 38.0M</td><td><a href="#">PDF ↓</a></td></tr>
+            <tr><td>Apr 2024</td><td><em>Letter, Unanswered</em></td><td>Nadira Khoury</td><td>IDR 84.0M</td><td><a href="#">PDF ↓</a></td></tr>
+            <tr><td>Nov 2023</td><td><em>Study, no. 4</em></td><td>Asti Rahardjo</td><td>IDR 22.0M</td><td><a href="#">PDF ↓</a></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="panel">
+        <h3>Private viewing</h3>
+        <p class="meta" style="margin-bottom:1rem;">Request a one-to-one viewing with the curator, in person at the Yogyakarta studio or virtually.</p>
+        <a class="btn btn--line" href="mailto:studio@findingmainera.art?subject=Private%20viewing">Request a viewing</a>
+      </section>
+    </div>
+  </section>
+</main>
+
+<footer class="footer" aria-label="Footer">
+  <div class="footer__sub" style="border-top:0;">
+    <span>© <span data-year>2026</span> Finding Mainera. Your collection · your data · always.</span>
+    <span><a href="./">Home</a> · <a href="./artist.html">Artists</a> · <a href="./auth.html">Sign out</a></span>
+  </div>
+</footer>
+
+<script src="./js/gallery.js" defer></script>
+</body>
+</html>

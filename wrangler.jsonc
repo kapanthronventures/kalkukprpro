@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "findingmainera",
+  "compatibility_date": "2026-05-12",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  "vars": {
+    "SUPER_ADMIN_USERNAME": "kapanthron",
+    "PUBLIC_SITE_URL": "https://findingmainera.art"
+  },
+  "//": [
+    "SUPER_ADMIN_PASSWORD_HASH and any other secrets are NOT stored in this",
+    "file. Set them once per environment with:",
+    "  wrangler secret put SUPER_ADMIN_PASSWORD_HASH",
+    "  wrangler secret put SESSION_SECRET",
+    "  wrangler secret put DATABASE_URL",
+    "They live in Cloudflare's encrypted secret store and are exposed to the",
+    "Worker at runtime via env bindings. See DEPLOY.md."
+  ]
+}
